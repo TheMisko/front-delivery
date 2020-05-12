@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import PromoHome from "../components/promoHome";
 import ItemCard from "../components/card";
-import OurStory from "../components/ourStory";
-import HomeCarousel from "../components/homeCarousel";
 
-const Home = ({ addOrder, selectAmount, selectSize }) => {
+const PizzaPage = ({ addOrder, selectAmount, selectSize }) => {
   const [pizzaData, setPizzaData] = useState();
   useEffect(() => {
     getPizzas();
@@ -21,21 +18,13 @@ const Home = ({ addOrder, selectAmount, selectSize }) => {
       console.log("error:", error);
     }
   };
+  // console.log(pizzaData[2]);
 
   return (
     <div>
-      <div className="carousel-container">
-        {" "}
-        <HomeCarousel selectAmount={selectAmount} addOrder={addOrder} />
-      </div>
-      {/* 
-      <div className="o-s-center">
-        <OurStory />
-      </div> */}
-
       <div>
         {pizzaData ? (
-          <div className="items-container-home">
+          <div className="items-container">
             {pizzaData.map((data) => (
               <ItemCard
                 selectAmount={selectAmount}
@@ -47,8 +36,9 @@ const Home = ({ addOrder, selectAmount, selectSize }) => {
           </div>
         ) : null}
       </div>
+      <div className="block"></div>
     </div>
   );
 };
 
-export default Home;
+export default PizzaPage;

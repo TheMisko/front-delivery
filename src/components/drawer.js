@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import FormOrder from "./formOrder";
+
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -17,9 +19,16 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  color: "blue",
 });
 
-export default function TemporaryDrawer({ openDrawer, setOpenDrawer }) {
+export default function TemporaryDrawer({
+  openDrawer,
+  setOpenDrawer,
+  orderList,
+  orderTotal,
+  setOrderTotal,
+}) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -39,6 +48,16 @@ export default function TemporaryDrawer({ openDrawer, setOpenDrawer }) {
     setState({ ...state, [anchor]: open });
   };
 
+  const removeOrder = (index, cena) => {
+    orderList.splice(index, 1);
+    console.log(cena);
+  };
+
+  const change = (cena) => {
+    setOrderTotal(orderTotal - cena);
+    console.log(cena);
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -49,19 +68,25 @@ export default function TemporaryDrawer({ openDrawer, setOpenDrawer }) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["porudzbina1", "porudzbina2", "porudzbina3", "porudzbina4"].map(
-          (text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? "1" : "2"}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          )
-        )}
+        {orderList.map((list, index) => (
+          <ListItem button key={index}>
+            <FormOrder
+              change={change}
+              list={list}
+              index={index}
+              removeOrder={removeOrder}
+            />
+          </ListItem>
+        ))}
       </List>
+      <div className="drawer-total">
+        <span id="total">Ukupno:</span>{" "}
+        <span id="drawer-total">{orderTotal}</span>
+      </div>
       <Divider />
       <List>
         <ListItem>
-          <Form />
+          <Form orderList={orderList} orderTotal={orderTotal} />
         </ListItem>
       </List>
     </div>

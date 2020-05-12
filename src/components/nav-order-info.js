@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
-const NavOrderInfo = ({ setOpenDrawer }) => {
+const NavOrderInfo = ({ setOpenDrawer, orderList, orderTotal }) => {
+  const [cartColor, setCartColor] = useState("grey");
+
+  useEffect(() => {
+    checkCartTotal();
+  }, [orderTotal]);
+
+  const checkCartTotal = () => {
+    if (orderTotal < 500) {
+      setCartColor("grey");
+    } else {
+      setCartColor("green");
+    }
+  };
   return (
     <div className="order-info-container">
       <div className="order-information">
-        <div>4 jela</div>
-        <div>400din</div>
-        <div>Cart icon</div>
+        <div>{orderList.length} jela</div>
+        <div>{orderTotal}din</div>
+        <ShoppingCartIcon className={cartColor}></ShoppingCartIcon>
       </div>
       <div onClick={() => setOpenDrawer(true)} className="order-info-btn">
-        Naruci
+        <span id="order-btn">Naruci</span>
       </div>
     </div>
   );
